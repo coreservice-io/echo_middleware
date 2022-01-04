@@ -97,6 +97,10 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 				return next(c)
 			}
 
+			if config.Logger.GetLevel() < ULog.DebugLevel {
+				return next(c)
+			}
+
 			req := c.Request()
 			res := c.Response()
 			start := time.Now()
