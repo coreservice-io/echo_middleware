@@ -4,13 +4,11 @@ import (
 	"fmt"
 
 	"github.com/labstack/echo/v4"
-	"github.com/universe-30/ULog"
 )
 
 type (
 	// RecoverConfig defines the config for Recover middleware.
 	RecoverConfig struct {
-		Logger  ULog.Logger
 		OnPanic func(panic_err interface{})
 	}
 )
@@ -30,12 +28,6 @@ func RecoverWithConfig(config RecoverConfig) echo.MiddlewareFunc {
 					if config.OnPanic != nil {
 						config.OnPanic(r)
 					}
-
-					if config.Logger != nil {
-						msg := fmt.Sprintf("[PANIC RECOVER] %s", r)
-						config.Logger.Errorln(msg)
-					}
-
 					c.Error(err)
 				}
 			}()
