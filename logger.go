@@ -56,6 +56,8 @@ type (
 
 		Logger ULog.Logger
 
+		RecordFailRequest bool
+
 		template *fasttemplate.Template
 
 		pool *sync.Pool
@@ -72,7 +74,8 @@ var (
 		Format:           "=> ${method} | ${remote_ip} | ${host} | ${uri} | ${bytes_in} B in | ${status} | ${bytes_out} B out | ${latency_human} | ${error}",
 		CustomTimeFormat: "2006-01-02 15:04:05.00000",
 		//colorer:          color.New(),
-		Logger: nil,
+		Logger:            nil,
+		RecordFailRequest: false,
 	}
 )
 
@@ -97,7 +100,7 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 				return next(c)
 			}
 
-			if config.Logger.GetLevel() < ULog.DebugLevel {
+			if config.Logger.GetLevel() < ULog.DebugLevel && config.RecordFailRequest == false {
 				return next(c)
 			}
 
@@ -111,6 +114,8 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 			buf := config.pool.Get().(*bytes.Buffer)
 			buf.Reset()
 			defer config.pool.Put(buf)
+
+			var n int
 
 			if _, err = config.template.ExecuteFunc(buf, func(w io.Writer, tag string) (int, error) {
 				switch tag {
@@ -151,7 +156,7 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 				case "user_agent":
 					return buf.WriteString(req.UserAgent())
 				case "status":
-					n := res.Status
+					n = res.Status
 					return buf.WriteString(strconv.Itoa(n))
 				case "error":
 					if err != nil {
@@ -193,7 +198,17 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 				return
 			}
 
-			config.Logger.Debugln(buf.String())
+			if config.RecordFailRequest == true {
+				if n >= 500 {
+					config.Logger.Errorln(buf.String())
+				} else if n >= 400 {
+					config.Logger.Warnln(buf.String())
+				} else {
+					config.Logger.Debugln(buf.String())
+				}
+			} else {
+				config.Logger.Debugln(buf.String())
+			}
 			return
 		}
 	}
