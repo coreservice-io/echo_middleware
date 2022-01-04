@@ -110,12 +110,17 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 			if err = next(c); err != nil {
 				c.Error(err)
 			}
+			//check status
+			n := res.Status
+
+			if n < 400 && config.Logger.GetLevel() < ULog.DebugLevel {
+				return
+			}
+
 			stop := time.Now()
 			buf := config.pool.Get().(*bytes.Buffer)
 			buf.Reset()
 			defer config.pool.Put(buf)
-
-			var n int
 
 			if _, err = config.template.ExecuteFunc(buf, func(w io.Writer, tag string) (int, error) {
 				switch tag {
@@ -156,7 +161,6 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 				case "user_agent":
 					return buf.WriteString(req.UserAgent())
 				case "status":
-					n = res.Status
 					return buf.WriteString(strconv.Itoa(n))
 				case "error":
 					if err != nil {
