@@ -203,10 +203,8 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 			}
 
 			if config.RecordFailRequest == true {
-				if n >= 500 {
+				if n >= 400 {
 					config.Logger.Errorln(buf.String())
-				} else if n >= 400 {
-					config.Logger.Warnln(buf.String())
 				} else {
 					config.Logger.Debugln(buf.String())
 				}
