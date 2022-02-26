@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/coreservice-io/ULog"
 	"github.com/labstack/echo/v4"
-	"github.com/universe-30/ULog"
 	"github.com/valyala/fasttemplate"
 )
 

@@ -5,8 +5,8 @@ middleware for echo server
 ### usage
 ```go
 import (
-	"github.com/universe-30/EchoMiddleware"  // logger and panic handle
-	"github.com/universe-30/EchoMiddleware/tool"  // use Jsoniter as json parser
+	"github.com/coreservice-io/EchoMiddleware"  // logger and panic handle
+	"github.com/coreservice-io/EchoMiddleware/tool"  // use Jsoniter as json parser
 )
 ```
 
@@ -20,10 +20,10 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/universe-30/EchoMiddleware"
-	"github.com/universe-30/EchoMiddleware/tool"
+	"github.com/coreservice-io/EchoMiddleware"
+	"github.com/coreservice-io/EchoMiddleware/tool"
 	"github.com/universe-30/LogrusULog"
-	"github.com/universe-30/ULog"
+	"github.com/coreservice-io/ULog"
 )
 
 func main() {

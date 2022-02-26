@@ -1,11 +1,11 @@
-module github.com/universe-30/EchoMiddleware
+module github.com/coreservice-io/EchoMiddleware
 
 go 1.17
 
 require (
 	github.com/json-iterator/go v1.1.12
 	github.com/labstack/echo/v4 v4.6.1
-	github.com/universe-30/ULog v0.1.15
+	github.com/coreservice-io/ULog v0.1.16
 	github.com/valyala/fasttemplate v1.2.1
 )
 
