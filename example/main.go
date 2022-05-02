@@ -34,7 +34,7 @@ func main() {
 		OnPanic: func(panic_err interface{}) {
 			//write your own dealer here
 			fmt.Println("todo:not working here")
-			hs.Logger.Error(panic_err)
+			logger.Errorln(panic_err)
 		},
 	}))
 
