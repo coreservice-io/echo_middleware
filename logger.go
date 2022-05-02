@@ -1,4 +1,4 @@
-package EchoMiddleware
+package echo_middleware
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/coreservice-io/ULog"
+	"github.com/coreservice-io/log"
 	"github.com/labstack/echo/v4"
 	"github.com/valyala/fasttemplate"
 )
@@ -54,7 +54,7 @@ type (
 		// Optional. Default value DefaultLoggerConfig.CustomTimeFormat.
 		CustomTimeFormat string `yaml:"custom_time_format"`
 
-		Logger ULog.Logger
+		Logger log.Logger
 
 		RecordFailRequest bool
 
@@ -100,7 +100,7 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 				return next(c)
 			}
 
-			if config.Logger.GetLevel() < ULog.DebugLevel && config.RecordFailRequest == false {
+			if config.Logger.GetLevel() < log.DebugLevel && config.RecordFailRequest == false {
 				return next(c)
 			}
 
@@ -113,7 +113,7 @@ func LoggerWithConfig(config LoggerConfig) echo.MiddlewareFunc {
 			//check status
 			n := res.Status
 
-			if n < 400 && config.Logger.GetLevel() < ULog.DebugLevel {
+			if n < 400 && config.Logger.GetLevel() < log.DebugLevel {
 				return
 			}
 

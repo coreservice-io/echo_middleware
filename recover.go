@@ -1,4 +1,4 @@
-package EchoMiddleware
+package echo_middleware
 
 import (
 	"fmt"

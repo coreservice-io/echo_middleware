@@ -1,29 +1,14 @@
-# echo_middleware
-
-middleware for echo server
-
-### usage
-```go
-import (
-	"github.com/coreservice-io/echo_middleware"  // logger and panic handle
-	"github.com/coreservice-io/echo_middleware/tool"  // use Jsoniter as json parser
-)
-```
-
-### example
-
-```go
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 
-	"github.com/labstack/echo/v4"
 	"github.com/coreservice-io/echo_middleware"
 	"github.com/coreservice-io/echo_middleware/tool"
-	"github.com/universe-30/logrus_log"
 	"github.com/coreservice-io/log"
+	"github.com/coreservice-io/logrus_log"
+	"github.com/labstack/echo/v4"
 )
 
 func main() {
@@ -47,7 +32,9 @@ func main() {
 	hs.Use(echo_middleware.RecoverWithConfig(echo_middleware.RecoverConfig{
 		// callback to handler panic
 		OnPanic: func(panic_err interface{}) {
-			log.Println(panic_err)
+			//write your own dealer here
+			fmt.Println("todo:not working here")
+			hs.Logger.Error(panic_err)
 		},
 	}))
 
@@ -67,4 +54,3 @@ func main() {
 	// start server
 	hs.Start(":8080")
 }
-```
